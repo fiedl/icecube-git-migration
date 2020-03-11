@@ -8,3 +8,4 @@ services:
       - svn_data:/var/opt/svn
     expose:
       - 3690
+      - 80
