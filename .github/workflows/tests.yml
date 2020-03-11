@@ -43,6 +43,12 @@ jobs:
         cd my_meta_project_svn_repo
         mkdir projects
         svn import svn://localhost/my_meta_project_svn_repo -m "initial import of an empty projects folder"
+    - name: "Svn checkout the meta project"
+      run: |
+        rm -rf my_meta_project_svn_repo
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        svn co svn://localhost/my_meta_project_svn_repo .
     - name: "Add project svn repository as svn external for the meta-project repository"
       run: |
         cd my_meta_project_svn_repo
