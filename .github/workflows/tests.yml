@@ -1,0 +1,23 @@
+name: Tests
+
+on: [push]
+
+jobs:
+
+  test_svn_externals:
+    # https://github.com/fiedl/icecube-git-migration/issues/2
+
+    runs-on: ubuntu
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: "Create project svn repository"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn svnadmin create my_project_svn_repo
+    - name: "Create meta-project svn repository"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn svnadmin create my_meta_project_svn_repo
+    - name: "Add svn externals for the meta-project repository"
+    - name: "Svn checkout the meta-project repository"
