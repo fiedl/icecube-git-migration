@@ -19,6 +19,10 @@ jobs:
       run: |
         cd demo/svn_server
         docker-compose run svn sh -c "cd /var/opt/svn/my_project_svn_repo/conf && echo 'anon-access = write' >> svnserve.conf"
+    - name: "Run the svn server in the background"
+      run: |
+        cd demo/svn_server
+        docker-compose up svn --detach
     - name: "Import test file into the project svn repository"
       run: |
         cd demo/svn_server/my_project_svn_repo
