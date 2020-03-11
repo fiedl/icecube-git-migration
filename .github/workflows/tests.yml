@@ -20,4 +20,6 @@ jobs:
         cd demo/svn_server
         docker-compose run svn svnadmin create my_meta_project_svn_repo
     - name: "Add svn externals for the meta-project repository"
+      run: echo "pending"
     - name: "Svn checkout the meta-project repository"
+      run: echo "pending"
