@@ -1,0 +1,10 @@
+version: '3'
+volumes:
+  svn_data: {}
+services:
+  svn:
+    image: garethflowers/svn-server:latest
+    volumes:
+      - svn_data:/var/opt/svn
+    expose:
+      - 3690
