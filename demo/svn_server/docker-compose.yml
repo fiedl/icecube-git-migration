@@ -3,9 +3,9 @@ volumes:
   svn_data: {}
 services:
   svn:
-    image: garethflowers/svn-server:latest
+    image: elleflorio/svn-server:latest
     volumes:
-      - svn_data:/var/opt/svn
-    expose:
-      - 3690
-      - 80
+      - svn_data:/home/svn
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:3690:3690"
