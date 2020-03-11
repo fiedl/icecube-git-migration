@@ -7,7 +7,7 @@ jobs:
   test_svn_externals:
     # https://github.com/fiedl/icecube-git-migration/issues/2
 
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
