@@ -32,7 +32,21 @@ jobs:
       run: |
         cd demo/svn_server
         docker-compose run svn svnadmin create my_meta_project_svn_repo
-    - name: "Add svn externals for the meta-project repository"
-      run: echo "pending"
+    - name: "Make the meta-project svn repository writable"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn sh -c "cd /var/opt/svn/my_meta_project_svn_repo/conf && echo '[general]
+        anon-access = write' >> svnserve.conf"
+    - name: "Import an empty projects folder into the meta-project repository"
+      run: |
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        mkdir projects
+        svn import svn://localhost/my_meta_project_svn_repo -m "initial import of an empty projects folder"
+    - name: "Add project svn repository as svn external for the meta-project repository"
+      run: |
+        cd my_meta_project_svn_repo
+        svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo" projects
+        svn commit -m "linking projects/my_project_svn_repo as svn external"
     - name: "Svn checkout the meta-project repository"
       run: echo "pending"
