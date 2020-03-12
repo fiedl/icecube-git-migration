@@ -104,9 +104,9 @@ jobs:
         # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
         #
         svn co svn://localhost/my_meta_project_svn_repo . --ignore-externals
-        svn update projects/my_project_svn_repo
-        svn update projects/clsim
-        svn update projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
+        svn co projects/my_project_svn_repo
+        svn co projects/clsim
+        svn co projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
 
         ls projects/my_project_svn_repo
         ls projects/clsim
