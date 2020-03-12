@@ -55,6 +55,12 @@ jobs:
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo" projects
         svn commit -m "linking projects/my_project_svn_repo as svn external"
         svn update
+    - name: "Add public github repository as svn external for the meta-project repository"
+      run: |
+        cd my_meta_project_svn_repo
+        svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
+        clsim https://github.com/claudiok/clsim.git" projects
+        svn commit -m "linking projects/clsim as svn external to a public github repo"
     - name: "Svn checkout the meta-project repository and see if the external project is there"
       run: |
         rm -rf my_meta_project_svn_repo
@@ -62,4 +68,5 @@ jobs:
         cd my_meta_project_svn_repo
         svn co svn://localhost/my_meta_project_svn_repo .
         ls projects/my_project_svn_repo
+        ls projects/clsim
 
