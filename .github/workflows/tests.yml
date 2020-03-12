@@ -103,6 +103,8 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.x
+    - name: "Install git-svn"
+      run: sudo apt-get install -y git-svn
     - name: "Install gitman"
       run: pip install gitman
     - name: "Cache svn credentials for github.com"
