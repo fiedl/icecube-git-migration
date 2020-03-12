@@ -74,12 +74,20 @@ jobs:
     - name: "Add a private github repository's folder as svn external for the meta-project repository"
       run: |
         cd my_meta_project_svn_repo
-        svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
         clsim https://github.com/claudiok/clsim.git/trunk
         monopole-generator https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator" projects
         svn commit -m "linking projects/monopole-generator as svn external to a private github-repo folder"
-        svn update
+
+        # For some reason, this does not work on github actions. But it does locally.
+        # https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
+        # svn update
+        #
+        # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
+        #
+        svn update projects/my_project_svn_repo
+        svn update projects/clsim
+        svn update projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
