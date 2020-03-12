@@ -61,6 +61,18 @@ jobs:
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
         clsim https://github.com/claudiok/clsim.git" projects
         svn commit -m "linking projects/clsim as svn external to a public github repo"
+        svn update
+    - name: "Add a private github repository's folder as svn external for the meta-project repository"
+      run: |
+        cd my_meta_project_svn_repo
+        svn auth --username $GITHUB_USERNAME --password $GITHUB_TOKEN https://github.com
+        svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
+        clsim https://github.com/claudiok/clsim.git
+        monopole-generator https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator" projects
+        svn commit -m "linking projects/monopole-generator as svn external to a private github-repo folder"
+        svn update
+      env:
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
     - name: "Svn checkout the meta-project repository and see if the external project is there"
       run: |
         rm -rf my_meta_project_svn_repo
@@ -69,4 +81,4 @@ jobs:
         svn co svn://localhost/my_meta_project_svn_repo .
         ls projects/my_project_svn_repo
         ls projects/clsim
-
+        ls projects/monopole-generator
