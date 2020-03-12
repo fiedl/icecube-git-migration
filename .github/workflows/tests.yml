@@ -59,7 +59,7 @@ jobs:
       run: |
         cd my_meta_project_svn_repo
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
-        clsim https://github.com/claudiok/clsim.git" projects
+        clsim https://github.com/claudiok/clsim.git/trunk" projects
         svn commit -m "linking projects/clsim as svn external to a public github repo"
         svn update
     - name: "Cache svn credentials for github.com"
@@ -71,7 +71,7 @@ jobs:
       run: |
         cd my_meta_project_svn_repo
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo
-        clsim https://github.com/claudiok/clsim.git
+        clsim https://github.com/claudiok/clsim.git/trunk
         monopole-generator https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator" projects
         svn commit -m "linking projects/monopole-generator as svn external to a private github-repo folder"
         svn update
