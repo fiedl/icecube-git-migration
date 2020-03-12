@@ -107,6 +107,7 @@ jobs:
       run: pip install gitman
     - name: "Cache svn credentials for github.com"
       run: |
+        svn ls https://github.com/claudiok/clsim.git/trunk
         echo "store-passwords = yes
         store-plaintext-passwords = yes" >> ~/.subversion/servers
         svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
