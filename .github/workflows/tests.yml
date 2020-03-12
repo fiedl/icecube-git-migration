@@ -64,6 +64,9 @@ jobs:
         svn update
     - name: "Cache svn credentials for github.com"
       run: |
+        echo "[auth]
+        store-passwords = yes
+        store-auth-creds = yes" >> ~/.subversion/config
         svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
@@ -78,39 +81,14 @@ jobs:
         clsim https://github.com/claudiok/clsim.git/trunk
         monopole-generator https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator" projects
         svn commit -m "linking projects/monopole-generator as svn external to a private github-repo folder"
-
-        # For some reason, this does not work on github actions. But it does locally.
-        # https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        # svn update
-        #
-        # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        #
-        svn update projects/my_project_svn_repo
-        svn update projects/clsim
-        svn update projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
-      env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+        svn update
     - name: "Svn checkout the meta-project repository and see if the external project is there"
       run: |
         rm -rf my_meta_project_svn_repo
         mkdir my_meta_project_svn_repo
         cd my_meta_project_svn_repo
-
-        # For some reason, this does not work on github actions. But it does locally.
-        # https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        # svn co svn://localhost/my_meta_project_svn_repo .
-        #
-        # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        #
-        svn co svn://localhost/my_meta_project_svn_repo . --ignore-externals
-        svn co projects/my_project_svn_repo
-        svn co projects/clsim
-        svn co projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
+        svn co svn://localhost/my_meta_project_svn_repo .
 
         ls projects/my_project_svn_repo
         ls projects/clsim
         ls projects/monopole-generator
-      env:
-        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
