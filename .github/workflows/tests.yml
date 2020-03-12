@@ -67,6 +67,7 @@ jobs:
         svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
     - name: "Add a private github repository's folder as svn external for the meta-project repository"
       run: |
         cd my_meta_project_svn_repo
