@@ -1,0 +1,11 @@
+location: projects
+sources:
+- name: clsim
+  type: git
+  repo: https://github.com/claudiok/clsim
+  rev: master
+- name: monopole-generator
+  type: git-svn
+  repo: https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
+  rev: HEAD
+groups: []
