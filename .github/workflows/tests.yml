@@ -97,18 +97,16 @@ jobs:
         mkdir my_meta_project_svn_repo
         cd my_meta_project_svn_repo
 
-        svn co svn://localhost/my_meta_project_svn_repo .
-
-        # # For some reason, this does not work on github actions. But it does locally.
-        # # https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        # # svn co svn://localhost/my_meta_project_svn_repo .
-        # #
-        # # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
-        # #
-        # svn co svn://localhost/my_meta_project_svn_repo . --ignore-externals
-        # svn update projects/my_project_svn_repo
-        # svn update projects/clsim
-        # svn update projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
+        # For some reason, this does not work on github actions. But it does locally.
+        # https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
+        # svn co svn://localhost/my_meta_project_svn_repo .
+        #
+        # Workaround: https://github.com/fiedl/icecube-git-migration/issues/2#issuecomment-597970367
+        #
+        svn co svn://localhost/my_meta_project_svn_repo . --ignore-externals
+        svn update projects/my_project_svn_repo
+        svn update projects/clsim
+        svn update projects/monopole-generator --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN
 
         ls projects/my_project_svn_repo
         ls projects/clsim
