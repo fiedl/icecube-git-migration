@@ -54,5 +54,12 @@ jobs:
         cd my_meta_project_svn_repo
         svn propset svn:externals "my_project_svn_repo svn://localhost/my_project_svn_repo" projects
         svn commit -m "linking projects/my_project_svn_repo as svn external"
-    - name: "Svn checkout the meta-project repository"
-      run: echo "pending"
+        svn update
+    - name: "Svn checkout the meta-project repository and see if the external project is there"
+      run: |
+        rm -rf my_meta_project_svn_repo
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        svn co svn://localhost/my_meta_project_svn_repo .
+        ls projects/my_project_svn_repo
+
