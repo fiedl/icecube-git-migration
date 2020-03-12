@@ -64,9 +64,8 @@ jobs:
         svn update
     - name: "Cache svn credentials for github.com"
       run: |
-        echo "[auth]
-        store-passwords = yes
-        store-auth-creds = yes" >> ~/.subversion/config
+        echo "store-passwords = yes
+        store-plaintext-passwords = yes" >> ~/.subversion/servers
         svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
