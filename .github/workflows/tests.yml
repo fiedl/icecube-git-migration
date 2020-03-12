@@ -68,6 +68,9 @@ jobs:
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    - name: "Check if svn credentials are available"
+      run: |
+        svn auth https://github.com
     - name: "Add a private github repository's folder as svn external for the meta-project repository"
       run: |
         cd my_meta_project_svn_repo
