@@ -118,7 +118,7 @@ jobs:
       run: |
         cd demo/meta_project_with_gitman
         cat gitman.yml
-        gitman update
+        gitman update --force
     - name: "Check if the code of the external projects is there"
       run: |
         cd demo/meta_project_with_gitman/projects
