@@ -91,3 +91,31 @@ jobs:
         ls projects/my_project_svn_repo
         ls projects/clsim
         ls projects/monopole-generator
+
+  test_meta_project_with_gitman:
+    # https://github.com/fiedl/icecube-git-migration/issues/2
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: "Install gitman"
+      run: pip install gitman
+    - name: "Cache svn credentials for github.com"
+      run: |
+        echo "store-passwords = yes
+        store-plaintext-passwords = yes" >> ~/.subversion/servers
+        svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
+      env:
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    - name: "Fetch the source code of all projects of a meta project with gitman"
+      run: |
+        cd demo/meta_project_with_gitman
+        cat gitman.yml
+        gitman update
+    - name: "Check if the code of the external projects is there"
+      run: |
+        cd demo/meta_project_with_gitman/projects
+        ls clsim
+        ls monopole-generator
