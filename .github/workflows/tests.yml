@@ -64,7 +64,7 @@ jobs:
         svn update
     - name: "Cache svn credentials for github.com"
       run: |
-         svn ls --username $GITHUB_USERNAME --password $GITHUB_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk
+        svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
     - name: "Add a private github repository's folder as svn external for the meta-project repository"
