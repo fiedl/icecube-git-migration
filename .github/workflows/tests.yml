@@ -177,7 +177,33 @@ jobs:
       run: |
         cd demo/svn_server
         docker-compose up --detach svn
-    - name: "Create meta-project svn repository"
+    - name: "Create combo meta-project svn repository"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn svnadmin create combo
+    - name: "Make the meta-project svn repository writable"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn sh -c "cd /var/opt/svn/combo/conf && echo '[general]
+        anon-access = write' >> svnserve.conf"
+    - name: "Import empty projects folder into the combo meta-project repository"
+      run: |
+        mkdir combo
+        cd combo
+        mkdir projects
+        svn import svn://localhost/combo -m "initial import of an empty projects folder"
+    - name: "Svn checkout the combo meta project"
+      run: |
+        rm -rf combo
+        mkdir combo
+        cd combo
+        svn co svn://localhost/combo .
+    - name: "Add github combo clsim as svn external in the projects folder"
+      run: |
+        cd combo
+        svn propset svn:externals "clsim https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/clsim" projects
+        svn commit -m "linking github combo clsim as svn external"
+    - name: "Create another meta-project svn repository"
       run: |
         cd demo/svn_server
         docker-compose run svn svnadmin create my_meta_project_svn_repo
@@ -186,11 +212,10 @@ jobs:
         cd demo/svn_server
         docker-compose run svn sh -c "cd /var/opt/svn/my_meta_project_svn_repo/conf && echo '[general]
         anon-access = write' >> svnserve.conf"
-    - name: "Import empty projects and meta-projects folders into the meta-project repository"
+    - name: "Import empty meta-projects folder into the meta-project repository"
       run: |
         mkdir my_meta_project_svn_repo
         cd my_meta_project_svn_repo
-        mkdir projects
         mkdir meta-projects
         svn import svn://localhost/my_meta_project_svn_repo -m "initial import of an empty projects folder"
     - name: "Svn checkout the meta project"
@@ -207,13 +232,11 @@ jobs:
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-    - name: "Add github combo as svn external in the meta-projects folder"
+    - name: "Add combo as svn external in the meta-projects folder"
       run: |
         cd my_meta_project_svn_repo
-        svn propset svn:externals "combo https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk" meta-projects
-        svn propset svn:externals "clsim meta-projects/combo/clsim" projects
-        svn commit -m "linking svn externals"
-        svn update
+        svn propset svn:externals "combo svn://localhost/combo" meta-projects
+        svn commit -m "linking combo svn external"
     - name: "Svn checkout the meta-project repository and see if the external project is there"
       run: |
         rm -rf my_meta_project_svn_repo
@@ -222,8 +245,9 @@ jobs:
         svn co svn://localhost/my_meta_project_svn_repo .
 
         ls meta-projects
-        ls projects
-        ls projects/clsim
+        ls meta-projects/combo
+        ls meta-projects/combo/projects
+        ls meta-projects/combo/projects/clsim
 
   test_meta_project_with_gitman:
     # https://github.com/fiedl/icecube-git-migration/issues/2
