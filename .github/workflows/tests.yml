@@ -166,6 +166,65 @@ jobs:
         cd my_meta_project_svn_repo
         ls projects/my_project_svn_repo
 
+  test_multiple_redirects_with_svn_externals:
+    # https://github.com/fiedl/icecube-git-migration/issues/4#issue-582378383
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: "Run the svn server in the background"
+      run: |
+        cd demo/svn_server
+        docker-compose up --detach svn
+    - name: "Create meta-project svn repository"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn svnadmin create my_meta_project_svn_repo
+    - name: "Make the meta-project svn repository writable"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn sh -c "cd /var/opt/svn/my_meta_project_svn_repo/conf && echo '[general]
+        anon-access = write' >> svnserve.conf"
+    - name: "Import empty projects and meta-projects folders into the meta-project repository"
+      run: |
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        mkdir projects
+        mkdir meta-projects
+        svn import svn://localhost/my_meta_project_svn_repo -m "initial import of an empty projects folder"
+    - name: "Svn checkout the meta project"
+      run: |
+        rm -rf my_meta_project_svn_repo
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        svn co svn://localhost/my_meta_project_svn_repo .
+    - name: "Cache svn credentials for github.com"
+      run: |
+        echo "store-passwords = yes
+        store-plaintext-passwords = yes" >> ~/.subversion/servers
+        svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
+      env:
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    - name: "Add github combo as svn external in the meta-projects folder"
+      run: |
+        cd my_meta_project_svn_repo
+        svn propset svn:externals "combo https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk" meta-projects
+        svn propset svn:externals "clsim meta-projects/combo/clsim" projects
+        svn commit -m "linking svn externals"
+        svn update
+    - name: "Svn checkout the meta-project repository and see if the external project is there"
+      run: |
+        rm -rf my_meta_project_svn_repo
+        mkdir my_meta_project_svn_repo
+        cd my_meta_project_svn_repo
+        svn co svn://localhost/my_meta_project_svn_repo .
+
+        ls meta-projects
+        ls projects
+        ls projects/clsim
+
   test_meta_project_with_gitman:
     # https://github.com/fiedl/icecube-git-migration/issues/2
 
