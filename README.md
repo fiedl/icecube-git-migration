@@ -278,8 +278,9 @@ Additionally, for committing to combo projects:
 
 ## Steps until goal is reached
 
-- [x] Check with experiments and tests that this proposal would actually work
 - [x] Import combo history to git
+- [x] Propose a set of choices (https://github.com/fiedl/icecube-git-migration/issues/9)
+- [ ] Check with experiments and tests that this proposal would actually work <== DOING
 - [ ] Please challenge this proposal by posting scenarios, either in the `#git_migration` slack channel, or in [this repo's issues](https://github.com/fiedl/icecube-git-migration/issues).
 - [ ] Approve this proposal
 - [ ] Make an early announcement that everyone should get a github account and be added as collaborator to the combo git repo
