@@ -224,8 +224,20 @@ jobs:
     - name: "Svn ls if the external combo code is present"
       run: |
         svn ls svn://localhost/legacy_svn_repo
-        svn ls svn://localhost/legacy_svn_repo/meta-projects
+        svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects
         svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects/combo
+    - name: "Run svn update (after adding the external)"
+      run: |
+        cd another_copy_of_legacy_svn_repo
+        svn update
+    - name: "Check if the files from github are there when checking out the whole repo"
+      run: |
+        svn co svn://localhost/legacy_svn_repo fresh_copy_of_whole_legacy_svn_repo
+        cd fresh_copy_of_whole_legacy_svn_repo
+        ls
+        ls meta-projects
+        ls meta-projects/combo
+        ls meta-projects/combo/clsim
     - name: "Check if the files from github are there in a fresh svn checkout of combo"
       run: |
         svn co svn://localhost/legacy_svn_repo/meta-projects/combo fresh_copy_of_legacy_svn_repo
