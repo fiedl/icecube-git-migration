@@ -166,6 +166,65 @@ jobs:
         cd my_meta_project_svn_repo
         ls projects/my_project_svn_repo
 
+  test_switching_a_folder_to_an_svn_external:
+    # https://github.com/fiedl/icecube-git-migration/issues/10
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: "Create legacy svn repository"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn svnadmin create legacy_svn_repo
+    - name: "Make the project svn repository writable"
+      run: |
+        cd demo/svn_server
+        docker-compose run svn sh -c "cd /var/opt/svn/legacy_svn_repo/conf && echo '[general]
+        anon-access = write' >> svnserve.conf"
+    - name: "Run the svn server in the background"
+      run: |
+        cd demo/svn_server
+        docker-compose up --detach svn
+    - name: "Import a combo folder into the legacy svn repository"
+      run: |
+        mkdir legacy_svn_repo
+        cd legacy_svn_repo
+        mkdir -p meta-projects/combo
+        touch meta-projects/combo/test
+        svn import svn://localhost/legacy_svn_repo -m "initial import of legacy repo with combo folder"
+    - name: "Svn checkout the combo folder of the legacy repo"
+      run: |
+        rm -rf legacy_svn_repo
+        mkdir legacy_svn_repo
+        cd legacy_svn_repo
+        svn co svn://localhost/legacy_svn_repo/meta-projects/combo .
+    - name: "Check if the test file is there"
+      run: |
+        cd legacy_svn_repo
+        ls test
+    - name: "Add git combo repo as svn external to the legacy repository"
+      run: |
+        svn propset svn:externals "combo https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk" svn://localhost/legacy_svn_repo/meta-projects
+    - name: "Cache svn credentials for github.com"
+      run: |
+        echo "store-passwords = yes
+        store-plaintext-passwords = yes" >> ~/.subversion/servers
+        svn ls --username $GITHUB_USERNAME --password $GITHUB_ACCESS_TOKEN https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk/monopole-generator
+      env:
+        GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    - name: "Update the locally checked out svn combo"
+      run: |
+        cd legacy_svn_repo
+        svn update
+    - name: "Check if the combo files from github are there"
+      run: |
+        cd legacy_svn_repo
+        ls
+        ls clsim
+        ls monopole-generator
+
   test_multiple_redirects_with_svn_externals:
     # https://github.com/fiedl/icecube-git-migration/issues/4#issue-582378383
 
