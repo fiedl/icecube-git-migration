@@ -208,6 +208,7 @@ jobs:
         svn co svn://localhost/legacy_svn_repo another_copy_of_legacy_svn_repo
         cd another_copy_of_legacy_svn_repo
         svn delete meta-projects/combo
+        svn commit -m "deleting previous combo code"
         svn propset svn:externals "combo https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk" meta-projects
         svn commit -m "linking combo from github as svn external"
     - name: "Cache svn credentials for github.com"
