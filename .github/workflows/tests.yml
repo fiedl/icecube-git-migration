@@ -225,7 +225,7 @@ jobs:
       run: |
         svn ls svn://localhost/legacy_svn_repo
         svn ls svn://localhost/legacy_svn_repo/meta-projects
-        svn ls svn://localhost/legacy_svn_repo/meta-projects/combo
+        svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects/combo
     - name: "Check if the files from github are there in a fresh svn checkout of combo"
       run: |
         svn co svn://localhost/legacy_svn_repo/meta-projects/combo fresh_copy_of_legacy_svn_repo
