@@ -111,12 +111,22 @@ This repository serves as information hub for my experiments regarding the migra
 
 ## Tests, experiments, and checks
 
+Run a series of tests for individual steps of the concept:
+
 - [x] Merge a project (monopole-generator) into combo preserving both histories ➝ https://github.com/fiedl/monopole-generator/issues/3
 - [x] Using svn externals for meta projects ➝ https://github.com/fiedl/icecube-git-migration/issues/2
 - [x] Using gitman for meta projects ➝ https://github.com/fiedl/icecube-git-migration/issues/2
 - [x] Use github actions to run build and tests ➝ https://github.com/fiedl/icecube-combo-install, https://github.com/fiedl/monopole-generator-install
 - [ ] Import pre-combo history while preserving the existing combo git history
 - [ ] Test how to change the repo remote locally: Automatically by making `meta-projects/combo` an svn external? Using `svn relocate`? Require a fresh `svn checkout` or `git clone`? ➝ https://github.com/fiedl/icecube-git-migration/issues/10
+
+After that, test the concept as a whole:
+
+- [ ] Create a private, but writable proof-of-concept copy of [IceTrayCombo](https://github.com/IceCube-SPNO/IceTrayCombo) and usage and migration info in `README.md`
+- [ ] Test local migration of combo with a group of people
+- [ ] Test local migration of a meta project with a group of people
+- [ ] Test committing to combo with a group of people
+- [ ] Test updating a meta project with a group of people
 
 ## Wishlists, questions, and discussions
 
@@ -320,7 +330,7 @@ Additionally, for committing to combo projects:
 
 ## Author
 
-2020-03-18
+2020-03-17
 Sebastian Fiedlschuster (@fiedl)
 sebastian.fiedlschuster@fau.de
 
