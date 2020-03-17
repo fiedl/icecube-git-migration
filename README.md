@@ -261,6 +261,16 @@ To access the combo code, even through the github svn bridge, one would need to 
 - Become a member of the github icecube group
 - Copy ssh key to github
 
+When checking out combo:
+
+- One needs to run
+
+      svn checkout https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk src
+
+  rather than
+
+      svn checkout http://code.icecube.wisc.edu/svn/meta-projects/combo/trunk src
+
 Additionally, for committing to combo projects:
 
 - Learn (README.md) how to commit to git combo
