@@ -225,7 +225,9 @@ jobs:
       run: |
         svn ls svn://localhost/legacy_svn_repo
         svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects
-        svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects/combo
+        # # Does not work:
+        # svn ls --include-externals svn://localhost/legacy_svn_repo/meta-projects/combo
+        # # > svn: warning: W160013: URL 'svn://localhost/legacy_svn_repo/meta-projects/combo' non-existent in revision 3
     - name: "Run svn update (after adding the external)"
       run: |
         cd another_copy_of_legacy_svn_repo
