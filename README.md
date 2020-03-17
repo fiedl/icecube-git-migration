@@ -306,3 +306,10 @@ Additionally, for committing to combo projects:
 - [Erik Blaufuss' and Don La Dieu's talk](https://docs.google.com/presentation/d/1UQSj5j_flHoEbX9NpAc1hi55sSJGDKBSZNYWwJqL5HA/edit?usp=sharing), 2019-10-31
 - Build instructions for combo with github actions: https://github.com/fiedl/icecube-combo-install
 
+
+## Author
+
+2020-03-18
+Sebastian Fiedlschuster (@fiedl)
+sebastian.fiedlschuster@fau.de
+
