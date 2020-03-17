@@ -218,6 +218,12 @@ jobs:
       env:
         GITHUB_USERNAME: ${{ secrets.GITHUB_USERNAME }}
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
+    - name: "Check if the files from github are there in a fresh svn checkout of combo"
+      run: |
+        svn co svn://localhost/legacy_svn_repo/meta-projects/combo fresh_copy_of_legacy_svn_repo
+        cd fresh_copy_of_legacy_svn_repo
+        ls
+        ls clsim
     - name: "Update the locally checked out svn combo"
       run: |
         cd legacy_svn_repo
