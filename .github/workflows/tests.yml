@@ -210,6 +210,7 @@ jobs:
         svn delete meta-projects/combo
         rm -rf meta-projects/combo
         svn commit -m "deleting previous combo code"
+        svn update
         svn propset svn:externals "combo https://github.com/IceCube-SPNO/IceTrayCombo.git/trunk" meta-projects
         svn commit -m "linking combo from github as svn external"
     - name: "Cache svn credentials for github.com"
